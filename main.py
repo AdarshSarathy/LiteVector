@@ -25,33 +25,35 @@ Upon startup, this server automatically injects 4,000 pre-computed document embe
 
 
 db = LiteVectorDB(dimension= 384, max_capacity= 10000) #initializes the LiteVectorDB with dimension 384 (for all-MiniLM-L6-v2 specifically) and max capacity as 10000
+db.load_seed_data()
+
 ai_service = EmbeddingService() #initializes the embedding service
 
 # Loads the pre-computed binary vectors into the database before starting the server to present a populated db for better testing
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    vector_file = "seed_vectors.npy" # binary numpy file containing the pre-computed embeddings
-    metadata_file = "seed_metadata.json"# metadata file for the pre-computed embeddings containing the index and strings
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     vector_file = "seed_vectors.npy" # binary numpy file containing the pre-computed embeddings
+#     metadata_file = "seed_metadata.json"# metadata file for the pre-computed embeddings containing the index and strings
     
-    if os.path.exists(vector_file) and os.path.exists(metadata_file):
-        print("Loading pre-computed binary vectors into RAM...")
+#     if os.path.exists(vector_file) and os.path.exists(metadata_file):
+#         print("Loading pre-computed binary vectors into RAM...")
  
-        loaded_vectors = np.load(vector_file)
+#         loaded_vectors = np.load(vector_file)
 
-        with open(metadata_file, "r") as f:
-            loaded_metadata = {int(k): v for k, v in json.load(f).items()}
+#         with open(metadata_file, "r") as f:
+#             loaded_metadata = {int(k): v for k, v in json.load(f).items()}
             
-        num_records = loaded_vectors.shape[0]
+#         num_records = loaded_vectors.shape[0]
 
-        db.vectors[:num_records] = loaded_vectors
-        db.metadata = loaded_metadata
-        db.current_count = num_records
+#         db.vectors[:num_records] = loaded_vectors
+#         db.metadata = loaded_metadata
+#         db.current_count = num_records
             
-        print(f"Successfully loaded {db.current_count} vectors. Database is ready.")
-    else:
-        print("No binary seed data found. Starting empty.")
+#         print(f"Successfully loaded {db.current_count} vectors. Database is ready.")
+#     else:
+#         print("No binary seed data found. Starting empty.")
         
-    yield
+#     yield
 
 
 app = FastAPI(title = "LiteVector AI Database", version = "1.0", description=api_description, lifespan = lifespan)
