@@ -120,7 +120,9 @@ async def search_documents(request: SearchRequest):
 
         return {'status': 'success', 'results': final_results}
     except Exception as e:
-        raise HTTPException(status_code= 500, detail= str(e))
+        print("--- ERROR DETECTED ---")
+        traceback.print_exc()
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run(app, host= '0.0.0.0', port= 8000)
