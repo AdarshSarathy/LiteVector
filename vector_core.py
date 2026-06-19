@@ -56,8 +56,14 @@ class LiteVectorDB:
 
     def load_seed_data(self):
         _, seed_vectors = get_resources()
+
+        with open('seed_metadata.json', 'r') as f:
+            seed_metadata = json.load(f)
+
         self.vectors[:seed_vectors.shape[0]] = seed_vectors
         self.current_count = seed_vectors.shape[0]
+
+        self.metadata = {int(k): v for k, v in seed_metadata.items()}
         print(f"Loaded {self.current_count} seed vectors into DB instance.")
 
     #adds the embedding to the db while updating the metadata also
