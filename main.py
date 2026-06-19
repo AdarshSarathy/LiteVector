@@ -56,7 +56,7 @@ ai_service = EmbeddingService() #initializes the embedding service
 #     yield
 
 
-app = FastAPI(title = "LiteVector AI Database", version = "1.0", description=api_description, lifespan = lifespan)
+app = FastAPI(title = "LiteVector AI Database", version = "1.0", description=api_description)#, lifespan = lifespan)
 
 # To enforce strict datatype match when taking inputs
 class InsertRequest(BaseModel):
