@@ -3,6 +3,7 @@ from fastapi.responses import RedirectResponse
 from contextlib import asynccontextmanager
 from pydantic import BaseModel,Field
 import numpy as np
+import traceback
 import uvicorn
 import json
 import os
