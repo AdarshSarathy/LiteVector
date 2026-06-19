@@ -76,7 +76,7 @@ async def root():
         "status": "online",
         "records_loaded": db.current_count,
         "docs_url": "http://localhost:8000/docs"
-    }
+    }, RedirectResponse(url="/docs", status_code=307)
 
 # Insert endpoint
 @app.post("/insert")
