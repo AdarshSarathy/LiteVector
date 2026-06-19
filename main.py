@@ -71,12 +71,7 @@ class SearchRequest(BaseModel):
 # Root endpoint to verify server status and redirect to the UI
 @app.get("/")
 async def root():
-    return {
-        "system": "LiteVectorDB",
-        "status": "online",
-        "records_loaded": db.current_count,
-        "docs_url": "http://localhost:8000/docs"
-    }, RedirectResponse(url="/docs", status_code=307)
+    return RedirectResponse(url="/docs", status_code=307)
 
 # Insert endpoint
 @app.post("/insert")
