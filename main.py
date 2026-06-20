@@ -35,10 +35,10 @@ app = FastAPI(title = "LiteVector AI Database", version = "1.0", description=api
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = [*],
-    allow_credentials = [*],
-    allow_methods = [*],
-    allow_headers = [*]
+    allow_origins = ["*"],
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"]
 )
 
 # To enforce strict datatype match when taking inputs
