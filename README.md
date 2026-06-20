@@ -39,7 +39,7 @@ The application is fully containerized with multi-stage layer caching optimized 
 #### 1. Clone the Repository
 First, download the source code to your local machine and navigate into the project directory:
 ```bash
-git clone [https://github.com/AdarshSarathy/LiteVector-Database.git](https://github.com/AdarshSarathy/LiteVector-Database.git)
+git clone https://github.com/AdarshSarathy/LiteVector-Database.git
 cd Vector-Database
 ```
 
