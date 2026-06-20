@@ -3,41 +3,26 @@ import numpy as np
 import os
 import gc
 import json
+import torch
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Global placeholders
-_model = None
-_vectors = None
-
-def get_resources():
-    """Lazy loader: Initializes model and vectors only on first request."""
-    global _model, _vectors
-    
-    if _model is None:
-        print("Lazy loading model and vectors into RAM...")
-        token = os.getenv('HF_TOKEN')
-        cache_dir = './model_cache'
-        
-        # Initialize model
-        _model = SentenceTransformer('all-MiniLM-L6-v2', cache_folder=cache_dir, token=token)
-        
-        # Load pre-computed vectors
-        _vectors = np.load('seed_vectors.npy')
-        
-        # Cleanup
-        gc.collect()
-        print("Initialization complete.")
-        
-    return _model, _vectors
+torch.set_num_threads(1)
 
 # Provides method to extract vectors from text
 class EmbeddingService:
+
+    def __init__(self):
+        print("Booting AI Model into RAM...")
+        token = os.getenv('HF_TOKEN')
+        cache_dir = './model_cache'
+        self.model = SentenceTransformer('all-MiniLM-L6-v2', cache_folder=cache_dir, token=token)
+        print("AI Model loaded.")
+
     def embed(self, text: str):
-        # Fetch the model lazily
-        model, _ = get_resources()
-        vector = model.encode(text, normalize_embeddings=True)
+        with torch.inference_mode():
+            vector = self.model.encode(text, normalize_embeddings=True)
         return vector
 
 # The main in-memory database
@@ -49,23 +34,17 @@ class LiteVectorDB:
         self.dimension = dimension
         self.max_capacity = max_capacity
         
-        self.current_count = 0
-
-        self.vectors = np.zeros((max_capacity, dimension), dtype= np.float32)
-
-        self.metadata = {}
-
-    def load_seed_data(self):
-        _, seed_vectors = get_resources()
+        seed_vectors = np.load('seed_vectors.npy')
+        self.current_count = seed_vectors.shape[0]
+        self.vectors = np.zeros((max_capacity, dimension), dtype=np.float32)
+        self.vectors[:self.current_count] = seed_vectors
 
         with open('seed_metadata.json', 'r') as f:
             seed_metadata = json.load(f)
-
-        self.vectors[:seed_vectors.shape[0]] = seed_vectors
-        self.current_count = seed_vectors.shape[0]
-
         self.metadata = {int(k): v for k, v in seed_metadata.items()}
-        print(f"Loaded {self.current_count} seed vectors into DB instance.")
+        
+        gc.collect()
+        print(f"Database fully initialized with {self.current_count} records.")
 
     #adds the embedding to the db while updating the metadata also
     def add_record(self, text: str, embedding: np.ndarray):

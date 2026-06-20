@@ -27,7 +27,6 @@ Upon startup, this server automatically injects 4,000 pre-computed document embe
 
 
 db = LiteVectorDB(dimension= 384, max_capacity= 10000) #initializes the LiteVectorDB with dimension 384 (for all-MiniLM-L6-v2 specifically) and max capacity as 10000
-db.load_seed_data()
 
 ai_service = EmbeddingService() #initializes the embedding service
 
