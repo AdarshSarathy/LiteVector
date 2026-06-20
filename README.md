@@ -6,6 +6,14 @@ Rather than relying on heavy, off-the-shelf database solutions, this project imp
 
 ---
 
+### 🌐 Live Demo
+
+The database is currently deployed and accessible via the public web. You can interact with the live Swagger UI to run searches against the 4,000-document dataset.
+
+👉 **[Live API Endpoints](https://litevector-database-production.up.railway.app/docs)**
+
+> **Infrastructure Note:** This project is hosted on a free-tier Railway container. To conserve resources, the cloud provider spins the instance down after 15 minutes of inactivity. **The very first search you run may take 10–15 seconds** as the container wakes up and loads the AI model into RAM. All subsequent searches will execute in sub-millisecond time.
+
 ### 🧠 Core Architecture & Optimizations
 
 * **Vectorized Search Engine:** Utilizes NumPy to execute high-speed matrix multiplications across pre-allocated `float32` arrays, ensuring O(1) insertion time and sub-millisecond query latency.
