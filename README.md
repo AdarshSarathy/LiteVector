@@ -36,19 +36,26 @@ The database is currently deployed and accessible via the public web. You can in
 
 The application is fully containerized with multi-stage layer caching optimized for rapid local builds and seamless cloud deployment.
 
-#### 1. Set Environment Variables (Optional)
+#### 1. Clone the Repository
+First, download the source code to your local machine and navigate into the project directory:
+```bash
+git clone [https://github.com/AdarshSarathy/LiteVector-Database.git](https://github.com/AdarshSarathy/LiteVector-Database.git)
+cd Vector-Database
+```
+
+#### 2. Set Environment Variables (Optional)
 Create a `.env` file in the root directory and add your Hugging Face token to enable seamless model caching:
 ```text
 HF_TOKEN=your_huggingface_token
 ```
 
-#### 2. Boot the Container
+#### 3. Boot the Container
 Run the following command in your terminal to build the image and launch the database service:
 ```bash
 docker compose up --build
 ```
 
-#### 3. Test the API
+#### 4. Test the API
 Once the logs show that the 4,000 vectors are loaded into RAM, navigate to the automatically generated Swagger UI to test the endpoints interactively:
 [http://localhost:8000/docs](http://localhost:8000/docs)
 
