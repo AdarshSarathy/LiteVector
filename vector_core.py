@@ -1,10 +1,11 @@
 from sentence_transformers import SentenceTransformer
+from dotenv import load_dotenv
 import numpy as np
+import pdfplumber
+import torch
+import json
 import os
 import gc
-import json
-import torch
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -88,3 +89,31 @@ class LiteVectorDB:
             })
 
         return results
+
+
+class ChunkingEngine:
+    def __init__(self, chunk: int = 100):
+        self.chunk = chunk
+        self.chunks = []
+        self.page_chunk = []
+    
+    def generate_chunks(self, file):
+
+        with pdfplumber.open(file) as pdf:
+            for pg in pdf.pages:
+                content = pg.extract_words(x_tolerance=3, y_tolerance=3, keep_blank_chars=False, use_text_flow=False, horizontal_ltr=True, vertical_ttb=True, extra_attrs=[])
+                for word in content:
+                    if len(self.page_chunk) >= self.chunk:
+                        self.chunks.append(tuple(self.page_chunk))
+                        self.page_chunk.clear()
+                    self.page_chunk.append(word['text'])
+            self.chunks.append(tuple(self.page_chunk))
+        
+        return self.chunks
+    
+    def stringify_chunks(self):
+        self.stringified = []
+        for _ in self.chunks:
+            self.stringified.append(' '.join(_))
+        
+        return self.stringified
