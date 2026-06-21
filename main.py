@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from contextlib import asynccontextmanager
-from ChunkingEngine import ChunkingEngine
 from pydantic import BaseModel,Field
 import numpy as np
 import pdfplumber
@@ -12,7 +11,7 @@ import json
 import os
 import io
 
-from vector_core import EmbeddingService, LiteVectorDB
+from vector_core import EmbeddingService, LiteVectorDB, ChunkingEngine
 
 api_description = """
 ### Welcome to the LiteVector AI Database!
