@@ -16,20 +16,40 @@ A highly responsive React application engineered to interface directly with the 
 - **State Management:** React Hooks (Custom Streaming Implementations)
 - **Networking:** Fetch API / Native Streaming
 
-## 🚀 Local Development
+## 🚀 Local Development Guide
 
-**1. Install dependencies:**
+Follow these steps to run the frontend application locally on your machine.
+
+**1. Clone the Repository:**
+Clone the complete monorepo to your local machine and navigate directly into the frontend directory.
+```bash
+git clone https://github.com/AdarshSarathy/LiteVector.git
+cd LiteVector/frontend
+```
+
+**2. Install Dependencies:**
+Ensure you have Node.js installed, then install the required project packages.
 ```bash
 npm install
 ```
 
-**2. Configure Environment:**
-Create a `.env` file in the root of the frontend directory and point it to your local backend API.
+**3. Configure Environment Variables:**
+Create a `.env` file in the root of the `/frontend` directory. You will need to point this to where your backend API is running. If you are running the backend locally on its default port, use the following:
 ```env
 VITE_API_URL=http://localhost:8000
 ```
 
-**3. Start the development server:**
+**4. Start the Development Server:**
+Launch the Vite development server.
 ```bash
 npm run dev
 ```
+The application will now be accessible in your browser, typically at `http://localhost:5173`.
+
+## 📦 Production Build
+
+To compile the application for production deployment:
+```bash
+npm run build
+```
+This will generate a highly optimized `dist` folder ready to be served by any static hosting provider (e.g., Vercel, Netlify, or Nginx).
