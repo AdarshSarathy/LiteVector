@@ -1,0 +1,10 @@
+services:
+  litevector:
+    build: .
+    container_name: litevector_db
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
